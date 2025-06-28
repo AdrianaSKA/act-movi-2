@@ -3,24 +3,47 @@ import React, { useState } from 'react';
 import { Switch } from 'react-native-gesture-handler';
 import { Divider } from 'react-native-paper';
 
-export default function DireccionScreen() {
-    const [calle, setCalle] = useState('');
-    const [numeroExterior, setNumeroExterior] = useState('');
-    const [ciudad, setCiudad] = useState('');
-    const [referencias, setReferencias] = useState('');
-    const [esFiscal, setEsFiscal] = useState(false);
+export default function DireccionFormularioScreen() {
+  const [calle, setCalle] = useState('');
+  const [numeroExterior, setNumeroExterior] = useState('');
+  const [ciudad, setCiudad] = useState('');
+  const [referencias, setReferencias] = useState('');
+  const [esFiscal, setEsFiscal] = useState(false);
 
-    function guardarDireccion() {
-        if (
-            calle.trim() === '' ||
-            numeroExterior.trim() === '' ||
-            ciudad.trim() === ''
-        ) {
-            Alert.alert('Error', 'Los campos Calle, Numero Exterior y Ciudad son obligatorios');
-            return;
-        }
+  const [mostrarDatos, setMostrarDatos] = useState(false);
+  const [datosGuardados, setDatosGuardados] = useState({
+    calle: '',
+    numeroExterior: '',
+    ciudad: '',
+    referencias: '',
+    esFiscal: false,
+  });
 
-    Alert.alert('Mensaje', 'Dirección guardada con éxito');
+  function guardarDireccion() {
+    if (
+      calle.trim() === '' ||
+      numeroExterior.trim() === '' ||
+      ciudad.trim() === ''
+    ) {
+      Alert.alert('Error', 'Los campos Calle, Número Exterior y Ciudad son obligatorios');
+      return;
+    }
+
+    if (!/^\d+$/.test(numeroExterior)) {
+      Alert.alert('Error', 'El número exterior debe ser numérico');
+      return;
+    }
+
+    setDatosGuardados({
+      calle: calle.trim(),
+      numeroExterior: numeroExterior.trim(),
+      ciudad: ciudad.trim(),
+      referencias: referencias.trim(),
+      esFiscal: esFiscal,
+    });
+
+    setMostrarDatos(true);
+    Alert.alert('Éxito', '¡Dirección guardada con éxito!');
   }
 
   return (
@@ -33,7 +56,7 @@ export default function DireccionScreen() {
         onChangeText={setCalle}
       />
       <TextInput
-        placeholder="Numero Exterior"
+        placeholder="Número Exterior"
         style={styles.input}
         keyboardType="numeric"
         onChangeText={setNumeroExterior}
@@ -44,7 +67,7 @@ export default function DireccionScreen() {
         onChangeText={setCiudad}
       />
       <TextInput
-        placeholder="Referencias"
+        placeholder="Referencias (opcional)"
         style={styles.input}
         onChangeText={setReferencias}
       />
@@ -60,6 +83,19 @@ export default function DireccionScreen() {
       <Divider style={styles.linea} />
 
       <Button title="Guardar" onPress={guardarDireccion} />
+
+      {
+        mostrarDatos &&
+        <View style={{ marginTop: 30, alignItems: 'flex-start' }}>
+          <Text style={styles.datosTitulo}>Datos guardados:</Text>
+          <Text style={styles.txt}>Calle: {datosGuardados.calle}</Text>
+          <Text style={styles.txt}>Número Exterior: {datosGuardados.numeroExterior}</Text>
+          <Text style={styles.txt}>Ciudad: {datosGuardados.ciudad}</Text>
+          <Text style={styles.txt}>Referencias: {datosGuardados.referencias || 'Ninguna'}</Text>
+          <Text style={styles.txt}>¿Dirección fiscal?: {datosGuardados.esFiscal ? 'Sí' : 'No'}</Text>
+        </View>
+      }
+
     </View>
   );
 }
@@ -90,6 +126,14 @@ const styles = StyleSheet.create({
   txt: {
     color: 'white',
     fontSize: 18,
+    marginVertical: 2,
+  },
+  datosTitulo: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    textDecorationLine: 'underline',
   },
   switchContainer: {
     flexDirection: 'row',

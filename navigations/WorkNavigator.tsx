@@ -1,22 +1,21 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
-import WelcomeScreen from "../screens/WelcomeScreen";
-import LoginScreen from "../screens/LoginScreen";
-import CalculadoraScreen from "../screens/CalculadoraScreen";
 import Entypo from '@expo/vector-icons/Entypo';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { BlurView } from 'expo-blur';
 import { StyleSheet } from "react-native";
-
-
+import { Component } from "react";
+import DireccionScreen from "../screens/DireccionScreen";
+import RegistroUsuarioScreen from "../screens/RegistroUsuarioScreen";
+import EncuestaSatisfaccionScreen from "../screens/EncuestaSatisfaccionScreen";
 
 
 const Tab = createBottomTabNavigator()
 
-function MyTab() {
+function MyWork() {
 
     return (
-        <Tab.Navigator initialRouteName="Calculadora"
+        <Tab.Navigator 
             screenOptions={{
                 tabBarStyle: { position: 'absolute' },
                 tabBarBackground: () => (
@@ -25,16 +24,16 @@ function MyTab() {
             }}
         >
             <Tab.Screen
-                name="Welcome"
-                component={WelcomeScreen}
+                name="RegistroUsuario"
+                component={RegistroUsuarioScreen}
                 options={{
                     tabBarIcon: () => (<AntDesign name="home" size={24} color="black" />)
                 }}
             />
 
             <Tab.Screen
-                name="Login"
-                component={LoginScreen}
+                name="Direccion"
+                component={DireccionScreen}
                 options={{
                     tabBarIcon: () => (<Entypo name="login" size={24} color="black" />)
                 }}
@@ -43,8 +42,8 @@ function MyTab() {
 
 
             <Tab.Screen
-                name="Calculadora"
-                component={CalculadoraScreen}
+                name="EncuestaSatisfaccion"
+                component={EncuestaSatisfaccionScreen}
                 options={{
                     tabBarIcon: () => (<AntDesign name="calculator" size={24} color="black" />)
                 }}
@@ -53,11 +52,11 @@ function MyTab() {
     )
 }
 
-export default function NavegadorBotton() {
+export default function WorkNavigator() {
 
     return (
         <NavigationContainer>
-            <MyTab />
+            <MyWork />
         </NavigationContainer>
     )
 }
